@@ -1,47 +1,80 @@
 import { PropTypes } from "prop-types";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 import CartContext from "../contexts/CartContext";
-import Button from "./Button";
-const placeholderImg = "../assets/react.svg";
+import {
+  PlusCircleIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/solid";
+import placeholderImg from "../assets/dishPlaceholder.png";
 
 const imgBaseUrl = import.meta.env.VITE_API_BASE_URL.replace("/api", "");
 
 const DishCard = ({ dish }) => {
   const [addedToCart, setAddedToCart] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const { setCart } = useContext(CartContext);
+  const { cart, addToCart, removeFromCart } = useContext(CartContext);
 
+  // For showing placeholder image until dish image is loaded
   const onImageLoad = () => {
-    console.log("Image loaded");
     setImageLoaded(true);
   };
 
-  const addToCart = () => {
-    setCart((prevCart) => {
-      const newCart = { ...prevCart };
-      const dishInCart = newCart.items.find((item) => item.id === dish.id);
-
-      // Add dish to cart if it's not already in cart and set quantity to 1
-      if (!dishInCart) {
-        newCart.items.push({ ...dish, quantity: 1 });
-      }
-
-      return newCart;
-    });
+  const handleAddToCart = () => {
+    addToCart(dish);
     setAddedToCart(true);
+    toast.success(`${dish.name} added to your order`);
+  };
+
+  const handleRemoveFromCart = () => {
+    removeFromCart(dish.id);
+    setAddedToCart(false);
+    toast.error(`${dish.name} removed from your order`);
+  };
+
+  // Check if dish is already in cart when component is mounted
+  // and set addedToCart state accordingly
+  useEffect(() => {
+    const isDishInCart = cart.items.find((item) => item.id === dish.id);
+    setAddedToCart(isDishInCart);
+  }, [cart, dish.id]);
+
+  const getIcon = () => {
+    if (addedToCart) {
+      return (
+        <div>
+          <CheckCircleIcon className="w-12 h-12 text-green-400 group-hover:hidden" />
+          <XCircleIcon className="w-12 h-12 text-red-500 hover:text-red-600 cursor-pointer transition duration-300 ease-in-out hidden group-hover:block" />
+        </div>
+      );
+    } else {
+      return (
+        <PlusCircleIcon className="w-12 h-12 text-react-blue hover:text-green-400 cursor-pointer transition duration-300 ease-in-out" />
+      );
+    }
+  };
+
+  const getCardHoverStyles = () => {
+    if (addedToCart) {
+      return "-translate-y-2 outline outline-2 outline-green-400 hover:outline-red-400";
+    } else {
+      return "hover:-translate-y-2";
+    }
   };
 
   return (
-    <div>
-      <div className="flex flex-col bg-ocean-light rounded-t-2xl shadow-md border-2 border-transparent hover:-translate-y-2 hover:border-react-blue hover:border-2 transition duration-300 ease-in-out">
+    <div
+      className="cursor-pointer group"
+      onClick={!addedToCart ? handleAddToCart : handleRemoveFromCart}
+    >
+      <div
+        className={`flex flex-col max-w-md bg-ocean-light rounded-t-2xl shadow-md border-transparent hover:outline hover:outline-2 hover:outline-react-blue transition duration-300 ease-in-out ${getCardHoverStyles()} `}
+      >
         <img
-          className="rounded-t-2xl border-b-2 border-react-blue"
-          src={
-            imageLoaded
-              ? `${imgBaseUrl}/${dish.image}`
-              : "https://res.cloudinary.com/practicaldev/image/fetch/s--NVPk20-f--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/2imjutnczd4f3jdhgbdx.png"
-          }
+          className={`rounded-t-2xl border-b-2 min-h-full border-dotted pointer-events-none border-fire-dark bg-black`}
+          src={imageLoaded ? `${imgBaseUrl}/${dish.image}` : placeholderImg}
           alt={dish.name}
           onLoad={onImageLoad}
         />
@@ -50,10 +83,10 @@ const DishCard = ({ dish }) => {
             <h2 className="text-xl">{dish.name}</h2>
             <p className="text-sm">{dish.description}</p>
           </div>
-          <div className="flex flex-col gap-2">
-            <p className="text-sm">{dish.price}$</p>
+          <div className="flex flex-row justify-between items-center gap-2">
+            <p className="text-xl font-bold">${dish.price}</p>
+            {getIcon()}
           </div>
-          <Button onClickHandler={addToCart}>Add to Order</Button>
         </div>
       </div>
     </div>

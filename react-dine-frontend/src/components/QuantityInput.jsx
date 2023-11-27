@@ -8,13 +8,19 @@ const QuantityInput = ({
 }) => {
   return (
     <div
-      className={`flex gap-4 items-center bg-ocean-dark rounded-md p-2 shadow-inner shadow-lg ${customClassName}`}
+      className={`flex gap-4 w-24 justify-center items-center bg-ocean-dark rounded-full p-2 shadow-inner shadow-lg ${customClassName}`}
     >
-      <button onClick={() => quantityButtonHandler(itemId, quantity - 1)}>
+      <button
+        className="text-react-blue font-bold"
+        onClick={() => quantityButtonHandler(itemId, quantity - 1)}
+      >
         -
       </button>
-      <p>{quantity}</p>
-      <button onClick={() => quantityButtonHandler(itemId, quantity + 1)}>
+      <p className="select-none w-4 text-center">{quantity}</p>
+      <button
+        className="text-react-blue font-bold"
+        onClick={() => quantityButtonHandler(itemId, quantity + 1)}
+      >
         +
       </button>
     </div>

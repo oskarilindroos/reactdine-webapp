@@ -1,91 +1,77 @@
-import { useState, useContext } from "react";
-import { ShoppingCartIcon } from "@heroicons/react/24/solid";
+import { useState, useContext, useRef, useEffect, Fragment } from "react";
+import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 
 import CartContext from "../contexts/CartContext";
 import Button from "./Button";
-import QuantityInput from "./QuantityInput";
+import OrderSummary from "./OrderSummary";
 
 const ShoppingCartMenu = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const { cart, setCart } = useContext(CartContext);
+  const { cart } = useContext(CartContext);
+
+  const menuRef = useRef(null);
   const navigate = useNavigate();
 
-  const quantityButtonHandler = (dishId, quantity) => {
-    setCart((prevCart) => {
-      const newCart = { ...prevCart };
-      const dishInCart = newCart.items.find((item) => item.id === dishId);
-
-      // Update quantity of the item in cart
-      if (dishInCart) {
-        dishInCart.quantity = quantity;
-      }
-
-      // Remove item from cart if quantity is set to 0
-      if (quantity < 1) {
-        newCart.items = newCart.items.filter((item) => item.id !== dishId);
-      }
-
-      return newCart;
-    });
-  };
-
   const checkoutHandler = () => {
-    navigate("/order/checkout");
+    navigate("/checkout", { preventScrollReset: true });
   };
+
+  // Close menu when user clicks outside of it (for mobile)
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsHovered(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuRef]);
 
   return (
-    <div
-      className={`fixed bottom-4 right-4 z-50 ${
-        (cart.items.length > 0 && !isHovered) ?? "animate-bounce"
-      }`}
-      onClick={() => setIsHovered(true)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="flex">
-        <ShoppingCartIcon className="h-10 w-10 text-react-blue" />
-        {cart.items.length > 0 && (
-          <span className="flex justify-center text-sm bg-react-blue rounded-full h-6 w-6">
-            {cart.items.length}
-          </span>
-        )}
-        {isHovered && (
-          <div className="flex gap-4 flex-col bg-ocean-light p-4 rounded shadow-lg">
-            <h4 className="text-xl">Your order</h4>
-            {cart.items.length === 0 && (
-              <p>You haven't added anything to your order yet........</p>
-            )}
-            <ul>
-              {cart.items.map((item) => (
-                <div className="flex flex-row gap-2" key={item.id}>
-                  <li className="py-2">{item.name}</li>
-                  <QuantityInput
-                    customClassName=""
-                    quantity={item.quantity}
-                    quantityButtonHandler={quantityButtonHandler}
-                    itemId={item.id}
-                  />
-                  <hr />
-                </div>
-              ))}
-            </ul>
-            <hr />
-            <p>
-              Order total:{" "}
-              {cart.items
-                .reduce(
-                  (n, { price, quantity }) => n + Number(price) * quantity,
-                  0
-                )
-                .toFixed(2)}
-              $
-            </p>
-            <Button onClick={checkoutHandler}>Checkout</Button>
-          </div>
-        )}
+    <Fragment>
+      {
+        // Darken background when menu is open on mobile
+        isHovered && (
+          <div className="fixed inset-0 bg-black opacity-50 lg:hidden md:hidden" />
+        )
+      }
+
+      <div
+        ref={menuRef}
+        onMouseOver={() => setIsHovered(true)}
+        onMouseOut={() => setIsHovered(false)}
+        onClick={() => setIsHovered(true)}
+        className={`fixed bottom-4 right-4 z-50 ${
+          cart.items.length > 0 && !isHovered && "animate-bounce"
+        }`}
+      >
+        <div className="flex">
+          <ShoppingBagIcon
+            className={`h-10 w-10 text-react-blue ${isHovered ? "hidden" : ""}`}
+          />
+          {cart.items.length > 0 && (
+            <span
+              className={`flex justify-center text-sm bg-react-blue rounded-full h-6 w-6 ${
+                isHovered ? "hidden" : ""
+              }`}
+            >
+              {cart.items.length}
+            </span>
+          )}
+          {isHovered && (
+            <div className="flex flex-col gap-4 p-4 md:w-96 lg:w-96 bg-ocean-light rounded shadow-lg">
+              <OrderSummary title="Your Order" cart={cart} />
+              <Button onClickHandler={checkoutHandler}>Checkout</Button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 

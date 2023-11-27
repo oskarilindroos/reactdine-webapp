@@ -6,7 +6,7 @@ const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const useApi = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const getDishes = useCallback(async () => {
@@ -21,10 +21,11 @@ const useApi = () => {
     }
   }, []);
 
-  const postOrder = useCallback(async (data) => {
+  const postOrder = useCallback(async (newOrder) => {
     setLoading(true);
     try {
-      const response = await axios.post(`${baseUrl}/orders`, data);
+      const response = await axios.post(`${baseUrl}/orders`, newOrder);
+      console.log(response);
       setData(response.data);
     } catch (error) {
       setError(error);
