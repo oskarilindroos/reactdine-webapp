@@ -1,10 +1,4 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
 import MenuPage from "./pages/MenuPage";
@@ -12,24 +6,7 @@ import HomePage from "./pages/HomePage";
 import RootLayout from "./components/RootLayout";
 import CartProvider from "./contexts/CartProvider";
 import CheckoutPage from "./pages/CheckoutPage";
-
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <RootLayout />,
-//     //errorElement: <ErrorPage />,
-//     children: [
-//       {
-//         path: "/",
-//         element: <MenuPage />,
-//       },
-//       {
-//         path: "/checkout",
-//         element: <CheckoutPage />,
-//       },
-//     ],
-//   },
-// ]);
+import ErrorPage from "./pages/ErrorPage";
 
 const App = () => {
   const location = useLocation();
@@ -45,6 +22,7 @@ const App = () => {
             <Route path="/menu" element={<MenuPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
           </Route>
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </AnimatePresence>
     </CartProvider>

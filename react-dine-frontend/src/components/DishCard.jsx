@@ -31,7 +31,7 @@ const DishCard = ({ dish }) => {
   const handleRemoveFromCart = () => {
     removeFromCart(dish.id);
     setAddedToCart(false);
-    toast.error(`${dish.name} removed from your order`);
+    toast.info(`${dish.name} removed from your order`);
   };
 
   // Check if dish is already in cart when component is mounted

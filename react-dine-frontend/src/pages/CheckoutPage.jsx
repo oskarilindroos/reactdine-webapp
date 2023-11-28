@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import OrderSummary from "../components/OrderSummary";
@@ -12,7 +12,9 @@ import useApi from "../hooks/useApi";
 
 const CheckoutPage = () => {
   const { cart, emptyCart } = useContext(CartContext);
-  const { loading, postOrder } = useApi();
+  const { loading, error, postOrder } = useApi();
+
+  const navigate = useNavigate();
 
   const onFormSubmit = async (formData) => {
     // Create a new order object
@@ -32,18 +34,29 @@ const CheckoutPage = () => {
       },
     };
 
+    // Post the order to the API, empty the cart and redirect to the homepage
     try {
       const response = await postOrder(newOrder);
-      if (response.status === 201) {
-        toast.success(response.data.message ?? "Order placed successfully!");
+      if (response?.status === 201) {
+        toast.success("Your order has been placed!");
         emptyCart();
-      } else {
-        toast.error(response.data.message ?? "An error occured.");
+
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       }
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(
+        error.message ?? "An error occurred while placing your order"
+      );
+    }
+  }, [error]);
 
   return (
     <motion.div
@@ -61,18 +74,17 @@ const CheckoutPage = () => {
         </Link>
         <h1 className="text-3xl">Checkout</h1>
       </div>
-      <div className="flex flex-row gap-4 mx-auto my-4 max-w-6xl">
+      <div className="flex flex-row gap-4 mx-auto max-w-6xl">
         <div className="w-3/4 bg-ocean-light p-4 rounded-lg">
           <h2 className="text-xl">Your details:</h2>
           <CustomerDetailsForm
             onSubmit={onFormSubmit}
             submitButtonElement={
               <Button type="submit" disabled={cart.items.length < 1}>
-                Place order
+                {loading ? "Placing order..." : "Place order"}
               </Button>
             }
           />
-          {Boolean(loading) && <p>Placing order...</p>}
         </div>
         <div className="flex min-h-full w-1/4 bg-ocean-light p-4 rounded-lg">
           <OrderSummary title="Order summary" cart={cart} />

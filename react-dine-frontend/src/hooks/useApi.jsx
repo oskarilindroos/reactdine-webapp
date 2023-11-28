@@ -25,11 +25,9 @@ const useApi = () => {
     setLoading(true);
     try {
       const response = await axios.post(`${baseUrl}/orders`, newOrder);
-      console.log(response);
       return response;
-      //setData(response.data);
     } catch (error) {
-      setError(error);
+      setError(error.response?.data ?? error);
     } finally {
       setLoading(false);
     }
