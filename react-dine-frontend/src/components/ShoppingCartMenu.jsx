@@ -52,11 +52,11 @@ const ShoppingCartMenu = () => {
       >
         <div className="flex">
           <ShoppingBagIcon
-            className={`h-10 w-10 text-react-blue ${isHovered ? "hidden" : ""}`}
+            className={`h-10 w-10 text-fire-dark ${isHovered ? "hidden" : ""}`}
           />
           {cart.items.length > 0 && (
             <span
-              className={`flex justify-center text-sm bg-react-blue rounded-full h-6 w-6 ${
+              className={`flex justify-center text-sm text-black bg-fire-dark rounded-full h-6 w-6 ${
                 isHovered ? "hidden" : ""
               }`}
             >

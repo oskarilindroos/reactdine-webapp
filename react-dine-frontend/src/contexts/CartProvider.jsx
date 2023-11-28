@@ -22,15 +22,14 @@ const CartProvider = ({ children }) => {
 
   const addToCart = (dish) =>
     setCart((prevCart) => {
-      const newCart = { ...prevCart };
-      const dishInCart = newCart.items.find((item) => item.id === dish.id);
+      const dishInCart = prevCart.items.find((item) => item.id === dish.id);
 
       // If dish is not in cart, add it and set quantity to 1
       if (!dishInCart) {
-        newCart.items.push({ ...dish, quantity: 1 });
+        return { items: [...prevCart.items, { ...dish, quantity: 1 }] };
       }
 
-      return newCart;
+      return prevCart;
     });
 
   // Calculate the total price of all items in cart
@@ -45,33 +44,22 @@ const CartProvider = ({ children }) => {
 
   const setItemQuantity = (dishId, quantity) =>
     setCart((prevCart) => {
-      const newCart = { ...prevCart };
-      const dishInCart = newCart.items.find((item) => item.id === dishId);
+      const newItems = prevCart.items
+        .map((item) => {
+          if (item.id === dishId) {
+            return { ...item, quantity: Math.max(quantity, 0) };
+          }
+          return item;
+        })
+        .filter((item) => item.quantity > 0);
 
-      // Update quantity of the item in cart
-      if (dishInCart) {
-        dishInCart.quantity = quantity;
-      }
-
-      // Remove item from cart if quantity is set to 0
-      if (quantity < 1) {
-        newCart.items = newCart.items.filter((item) => item.id !== dishId);
-      }
-
-      return newCart;
+      return { items: newItems };
     });
 
   const removeFromCart = (dishId) =>
     setCart((prevCart) => {
-      const newCart = { ...prevCart };
-      const dishInCart = newCart.items.find((item) => item.id === dishId);
-
-      // If dish is in cart, remove it
-      if (dishInCart) {
-        newCart.items = newCart.items.filter((item) => item.id !== dishId);
-      }
-
-      return newCart;
+      const newItems = prevCart.items.filter((item) => item.id !== dishId);
+      return { items: newItems };
     });
 
   const emptyCart = () => {
@@ -79,7 +67,7 @@ const CartProvider = ({ children }) => {
     localStorage.removeItem("cart");
   };
 
-  // Save cart to localStorage every time the state changes
+  // Save cart to localStorage every time the cart state changes
   useEffect(() => setCartToLocalStorage(cart), [cart]);
 
   return (

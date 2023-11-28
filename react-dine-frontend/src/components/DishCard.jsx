@@ -70,7 +70,7 @@ const DishCard = ({ dish }) => {
       onClick={!addedToCart ? handleAddToCart : handleRemoveFromCart}
     >
       <div
-        className={`flex flex-col max-w-md bg-ocean-light rounded-t-2xl shadow-md border-transparent hover:outline hover:outline-2 hover:outline-react-blue transition duration-300 ease-in-out ${getCardHoverStyles()} `}
+        className={`flex flex-col max-w-md bg-ocean-light rounded-t-2xl  shadow-ocean-dark shadow-inner drop-shadow-md border-transparent hover:outline hover:outline-2 hover:outline-react-blue transition duration-300 ease-in-out ${getCardHoverStyles()} `}
       >
         <img
           className={`rounded-t-2xl border-b-2 min-h-full border-dotted pointer-events-none border-fire-dark bg-black`}
