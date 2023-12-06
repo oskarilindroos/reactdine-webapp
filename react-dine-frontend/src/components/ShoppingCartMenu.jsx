@@ -34,13 +34,6 @@ const ShoppingCartMenu = () => {
 
   return (
     <Fragment>
-      {
-        // Darken background when menu is open on mobile
-        isHovered && (
-          <div className="fixed inset-0 bg-black opacity-50 lg:hidden md:hidden" />
-        )
-      }
-
       <div
         ref={menuRef}
         onMouseOver={() => setIsHovered(true)}
@@ -56,7 +49,7 @@ const ShoppingCartMenu = () => {
           />
           {cart.items.length > 0 && (
             <span
-              className={`flex justify-center text-sm text-black bg-fire-dark rounded-full h-6 w-6 ${
+              className={`flex h-6 w-6 justify-center rounded-full bg-fire-dark text-sm text-black ${
                 isHovered ? "hidden" : ""
               }`}
             >
@@ -64,7 +57,7 @@ const ShoppingCartMenu = () => {
             </span>
           )}
           {isHovered && (
-            <div className="flex flex-col gap-4 p-4 md:w-96 lg:w-96 bg-ocean-light rounded shadow-lg">
+            <div className="flex flex-col gap-4 rounded bg-ocean-light p-4 shadow-lg md:w-96 lg:w-96">
               <OrderSummary title="Your Order" cart={cart} />
               <Button onClickHandler={checkoutHandler}>Checkout</Button>
             </div>
