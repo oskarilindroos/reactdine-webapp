@@ -15,15 +15,6 @@ export default {
         "sun-light": "#FBFFCC",
         "react-blue": "#61DBFB",
       },
-      keyframes: {
-        "underline-animated": {
-          "0%": { "text-decoration-color": "transparent" },
-          "100%": { "text-decoration-color": "red" },
-        },
-      },
-      animation: {
-        underline: "underline-animated 1s ease-in-out",
-      },
     },
   },
   plugins: [],
