@@ -32,7 +32,6 @@ const CartProvider = ({ children }) => {
       return prevCart;
     });
 
-  // Calculate the total price of all items in cart
   const getTotalPrice = useMemo(
     () =>
       cart.items.reduce(
