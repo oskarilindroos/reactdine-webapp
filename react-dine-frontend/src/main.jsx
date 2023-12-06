@@ -9,9 +9,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-//const container = document.getElementById("root");
-//const root = createRoot(container);
-
 const router = createBrowserRouter(
   createRoutesFromElements(<Route path="*" element={<App />} />)
 );
