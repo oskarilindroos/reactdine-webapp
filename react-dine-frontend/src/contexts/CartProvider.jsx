@@ -50,7 +50,7 @@ const CartProvider = ({ children }) => {
           }
           return item;
         })
-        .filter((item) => item.quantity > 0);
+        .filter((item) => item.quantity > 0); // Remove items with quantity 0
 
       return { items: newItems };
     });
