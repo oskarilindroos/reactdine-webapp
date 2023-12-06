@@ -46,7 +46,7 @@ const CartProvider = ({ children }) => {
       const newItems = prevCart.items
         .map((item) => {
           if (item.id === dishId) {
-            return { ...item, quantity: Math.max(quantity, 0) };
+            return { ...item, quantity: Math.max(quantity, 0) }; // Quantity can't be negative
           }
           return item;
         })
