@@ -27,7 +27,7 @@ const CustomerFormDetails = ({ onSubmit, submitButtonElement }) => {
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="name">Name</label>
       <input
-        className="rounded-md bg-ocean-dark p-2 border-2 border-react-blue"
+        className="rounded-md border-2 border-react-blue bg-ocean-dark p-2"
         placeholder="John Doe"
         {...register("name")}
       />
@@ -35,7 +35,7 @@ const CustomerFormDetails = ({ onSubmit, submitButtonElement }) => {
 
       <label htmlFor="email">Email*</label>
       <input
-        className="rounded-md bg-ocean-dark p-2 border-2 border-react-blue"
+        className="rounded-md border-2 border-react-blue bg-ocean-dark p-2"
         placeholder="john@example.com"
         {...register("email")}
       />
@@ -43,7 +43,7 @@ const CustomerFormDetails = ({ onSubmit, submitButtonElement }) => {
 
       <label htmlFor="street">Street</label>
       <input
-        className="rounded-md bg-ocean-dark p-2 border-2 border-react-blue"
+        className="rounded-md border-2 border-react-blue bg-ocean-dark p-2"
         placeholder="123 Main St"
         {...register("street")}
       />
@@ -51,7 +51,7 @@ const CustomerFormDetails = ({ onSubmit, submitButtonElement }) => {
 
       <label htmlFor="postalCode">Postal Code</label>
       <input
-        className="rounded-md bg-ocean-dark p-2 border-2 border-react-blue"
+        className="rounded-md border-2 border-react-blue bg-ocean-dark p-2"
         placeholder="12345"
         {...register("postalCode")}
       />
@@ -59,17 +59,12 @@ const CustomerFormDetails = ({ onSubmit, submitButtonElement }) => {
 
       <label htmlFor="city">City</label>
       <input
-        className="rounded-md bg-ocean-dark p-2 border-2 border-react-blue"
+        className="rounded-md border-2 border-react-blue bg-ocean-dark p-2"
         placeholder="New York"
         {...register("city")}
       />
       <FormErrorText>{errors.city?.message}</FormErrorText>
-
-      {submitButtonElement ? (
-        submitButtonElement
-      ) : (
-        <Button type="submit">Submit</Button>
-      )}
+      {submitButtonElement ?? <Button type="submit">Submit</Button>}
     </form>
   );
 };
