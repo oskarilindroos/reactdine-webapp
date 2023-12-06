@@ -1,18 +1,41 @@
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { getWeekDay } from "../helpers/dateHelper";
-import { useLocation, Link } from "react-router-dom";
-import { motion, useAnimation } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import bannerVideo from "../assets/bannerVideo.mp4";
 import bannerImage from "../assets/banner.png";
+import { useCallback, useEffect } from "react";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
+  const onScrollDown = useCallback(() => {
+    navigate("/menu");
+  }, [navigate]);
+
+  useEffect(() => {
+    const onWheel = (event) => {
+      // If moving mouse wheel down
+      if (event.deltaY > 0) {
+        onScrollDown();
+      }
+    };
+
+    // Wheel event is used instead of scroll because scroll event
+    // would not be fired because of the height of the page
+    window.addEventListener("wheel", onWheel);
+
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+    };
+  }, [onScrollDown]);
+
   return (
     <motion.section
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 1 } }}
       exit={{ opacity: 0, transition: { duration: 0.5 } }}
-      className="relative flex items-center justify-center h-screen"
+      className="relative flex h-screen items-center justify-center"
     >
       <video
         autoPlay
@@ -23,8 +46,8 @@ const HomePage = () => {
         alt="Banner"
         className="absolute h-full w-full object-cover opacity-50 blur-sm"
       />
-      <div className="flex flex-col items-start gap-2 z-10 p-4">
-        <h1 className="text-5xl max-w-2xl">
+      <div className="z-10 flex flex-col items-start gap-2 p-4">
+        <h1 className="max-w-2xl text-5xl">
           Welcome to{" "}
           <span className="underline">
             <span className="text-react-blue">React</span>
