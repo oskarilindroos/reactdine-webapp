@@ -2,7 +2,7 @@ const LoadingIcon = () => {
   return (
     <svg
       aria-hidden="true"
-      className="w-8 h-8 animate-spin text-transparent fill-react-blue"
+      className="h-8 w-8 animate-spin self-center fill-react-blue text-transparent"
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
