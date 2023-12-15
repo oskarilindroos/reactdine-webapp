@@ -32,6 +32,19 @@ const ShoppingCartMenu = () => {
     };
   }, [menuRef]);
 
+  // Prevent scrolling the page when menu is open
+  useEffect(() => {
+    if (isHovered) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isHovered]);
+
   return (
     <Fragment>
       <div
@@ -39,7 +52,7 @@ const ShoppingCartMenu = () => {
         onMouseOver={() => setIsHovered(true)}
         onMouseOut={() => setIsHovered(false)}
         onClick={() => setIsHovered(true)}
-        className={`fixed bottom-4 right-4 z-50 ${
+        className={`fixed bottom-4 right-4 z-50 pl-4 ${
           cart.items.length > 0 && !isHovered && "animate-bounce"
         }`}
       >
@@ -57,8 +70,10 @@ const ShoppingCartMenu = () => {
             </span>
           )}
           {isHovered && (
-            <div className="flex flex-col gap-4 rounded bg-ocean-light p-4 shadow-lg md:w-96 lg:w-96">
-              <OrderSummary title="Your Order" cart={cart} />
+            <div className="flex min-w-[300px] flex-col gap-4 rounded-lg border-2 border-ocean-dark bg-ocean-light p-4 shadow-lg">
+              <div className="max-h-[600px] overflow-scroll p-2 lg:max-h-[800px]">
+                <OrderSummary title="Your Order" cart={cart} />
+              </div>
               <Button onClickHandler={checkoutHandler}>Checkout</Button>
             </div>
           )}
