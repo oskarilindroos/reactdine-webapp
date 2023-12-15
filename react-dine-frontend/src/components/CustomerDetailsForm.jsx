@@ -25,7 +25,7 @@ const CustomerFormDetails = ({ onSubmit, submitButtonElement }) => {
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="name">Name</label>
+      <label htmlFor="name">Name*</label>
       <input
         className="rounded-md border-2 border-react-blue bg-ocean-dark p-2"
         placeholder="John Doe"
@@ -41,7 +41,7 @@ const CustomerFormDetails = ({ onSubmit, submitButtonElement }) => {
       />
       <FormErrorText>{errors.email?.message}</FormErrorText>
 
-      <label htmlFor="street">Street</label>
+      <label htmlFor="street">Street*</label>
       <input
         className="rounded-md border-2 border-react-blue bg-ocean-dark p-2"
         placeholder="123 Main St"
@@ -49,7 +49,7 @@ const CustomerFormDetails = ({ onSubmit, submitButtonElement }) => {
       />
       <FormErrorText>{errors.street?.message}</FormErrorText>
 
-      <label htmlFor="postalCode">Postal Code</label>
+      <label htmlFor="postalCode">Postal Code*</label>
       <input
         className="rounded-md border-2 border-react-blue bg-ocean-dark p-2"
         placeholder="12345"
@@ -57,7 +57,7 @@ const CustomerFormDetails = ({ onSubmit, submitButtonElement }) => {
       />
       <FormErrorText>{errors.postalCode?.message}</FormErrorText>
 
-      <label htmlFor="city">City</label>
+      <label htmlFor="city">City*</label>
       <input
         className="rounded-md border-2 border-react-blue bg-ocean-dark p-2"
         placeholder="New York"
