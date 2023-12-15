@@ -17,21 +17,6 @@ const ShoppingCartMenu = () => {
     navigate("/checkout", { preventScrollReset: true });
   };
 
-  // Close menu when user clicks outside of it (for mobile)
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsHovered(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [menuRef]);
-
   // Prevent scrolling the page when menu is open
   useEffect(() => {
     if (isHovered) {
@@ -47,6 +32,16 @@ const ShoppingCartMenu = () => {
 
   return (
     <Fragment>
+      {
+        // If the menu is open, render a black overlay behind it that covers the whole page
+        // and close the menu when clicked (added for mobile)
+        isHovered && (
+          <div
+            className="fixed inset-0 z-40 bg-black opacity-40"
+            onClick={() => setIsHovered(false)}
+          ></div>
+        )
+      }
       <div
         ref={menuRef}
         onMouseOver={() => setIsHovered(true)}
