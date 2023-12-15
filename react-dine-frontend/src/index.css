@@ -6,7 +6,7 @@
 
 body {
   @apply text-sun-light;
-  @apply bg-no-repeat bg-gradient-to-br min-h-screen from-30% from-ocean-dark to-ocean-light;
+  @apply min-h-screen bg-gradient-to-br from-ocean-dark from-30% to-ocean-light;
 }
 
 @layer base {
