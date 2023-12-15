@@ -60,13 +60,13 @@ const CheckoutPage = () => {
 
   return (
     <motion.div
-      className="min-h-screen"
-      initial={{ opacity: 0, transition: { duration: 0.5 } }}
-      animate={{ opacity: 1, transition: { duration: 0.5 } }}
+      className="p-4"
+      initial={{ opacity: 0, y: 0, x: 1000, transition: { duration: 1.0 } }}
+      animate={{ opacity: 1, x: 0, transition: { duration: 1.0 } }}
       exit={{ opacity: 0, x: 1000, transition: { duration: 0.5 } }}
     >
-      <div className="flex flex-col gap-2 mx-auto py-4 max-w-6xl ">
-        <Link className="hover:text-fire-dark text-react-blue" to="/menu">
+      <div className="mx-auto flex max-w-6xl flex-col gap-2">
+        <Link className="text-react-blue hover:text-fire-dark" to="/menu">
           <div className="flex items-center gap-2">
             <ChevronLeftIcon className="h-6 w-6" />
             <h1 className="text-xl">Back to menu</h1>
@@ -74,8 +74,8 @@ const CheckoutPage = () => {
         </Link>
         <h1 className="text-3xl">Checkout</h1>
       </div>
-      <div className="flex flex-row gap-4 mx-auto max-w-6xl">
-        <div className="w-3/4 bg-ocean-light p-4 rounded-lg">
+      <div className="mx-auto my-2 grid max-w-6xl grid-cols-1 gap-4 sm:md:grid-cols-[60%_40%]">
+        <div className="order-2 max-h-[700px] rounded-lg bg-ocean-light p-4 sm:md:order-1">
           <h2 className="text-xl">Your details:</h2>
           <CustomerDetailsForm
             onSubmit={onFormSubmit}
@@ -86,31 +86,12 @@ const CheckoutPage = () => {
             }
           />
         </div>
-        <div className="flex min-h-full w-1/4 bg-ocean-light p-4 rounded-lg">
+        <div className="order-1  rounded-lg bg-ocean-light p-4 sm:md:order-2">
           <OrderSummary title="Order summary" cart={cart} />
         </div>
       </div>
     </motion.div>
   );
 };
-
-/* <div className="flex flex-wrap gap-4">
-        <div className="flex bg-ocean-light shadow-lg rounded-lg p-4">
-          <h2 className="text-xl">Your details:</h2>
-          <CustomerDetailsForm
-            onSubmit={onFormSubmit}
-            submitButtonElement={
-              <Button type="submit" disabled={cart.items.length < 1}>
-                Place order
-              </Button>
-            }
-          />
-        </div>
-        <div className="flex">
-          <div className="bg-ocean-light shadow-lg rounded-lg p-4">
-            <OrderSummary title="Order summary" cart={cart} />
-          </div>
-        </div>
-      </div> */
 
 export default CheckoutPage;
