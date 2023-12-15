@@ -71,7 +71,7 @@ const ShoppingCartMenu = () => {
           )}
           {isHovered && (
             <div className="flex min-w-[300px] flex-col gap-4 rounded-lg border-2 border-ocean-dark bg-ocean-light p-4 shadow-lg">
-              <div className="max-h-[600px] overflow-scroll p-2 lg:max-h-[800px]">
+              <div className="max-h-[480px] overflow-scroll p-2 lg:max-h-[800px]">
                 <OrderSummary title="Your Order" cart={cart} />
               </div>
               <Button onClickHandler={checkoutHandler}>Checkout</Button>
