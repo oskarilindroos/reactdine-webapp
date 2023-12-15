@@ -15,7 +15,7 @@ const App = () => {
 
   return (
     <CartProvider>
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         <Routes location={location} key={locationArr[1]}>
           <Route path="/" element={<RootLayout />}>
             <Route path="/" element={<HomePage />} />
